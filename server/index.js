@@ -1,36 +1,40 @@
 var http = require("http");
 var url = require("url");
 var path = require("path");
-var fs = require("fs");
-var mime = require('mime');
-var server = http.createServer(function (req, res) {
+var static = require('./staticServer')
+var api = require('./ajaxServer');
+var querystring = require('querystring');
+var server = new http.Server();
+
+server.on('request', function (req, res) {
+    console.log(req.method);
     var urlObj = url.parse(req.url);
     var urlPathname = urlObj.pathname;
-    if (urlPathname === "/") {
-        urlPathname = "../public/index.html"
-    }
-    var filePathname = path.join(__dirname, '../public', urlPathname)//绝对路径
     var ext = path.parse(urlPathname).ext;
-    console.log(urlObj);
-
-    var mimeType = mime.getType(ext)
-    fs.readFile(filePathname, (err, data) => {//读取文件响应
-        if (err) {
-            res.writeHead(404, {
-                "Context-type": "text/plain"
+    req.setEncoding('utf-8');
+    if (ext !== ".js") {
+        static.static[urlPathname](req, res, urlObj)
+    } else {
+        if (req.method === 'GET') {
+            req.body = urlObj.query
+        } else if (req.method === 'POST') {
+            let postData = '';
+            req.on("data", function (postDataChunk) {
+                postData += postDataChunk;
             });
-            res.write('404');
-            res.end();
-        } else {
-            res.writeHead(200, {
-                "Context-type": mimeType
+            req.on("end", function () {
+                const params = querystring.parse(postData);
+                req.body = params;
             });
-            res.write(data); //返回数据
-            res.end();
         }
-    })
+        req.on('end', function () {
+            api.api[urlPathname](req, res)
+        })
+
+    }
+
 })
+
 server.listen(3000, function () {
     console.log("端口号：http://localhost:3000");
-
 })

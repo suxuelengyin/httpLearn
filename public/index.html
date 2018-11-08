@@ -5,8 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 </head>
 <body>
     <a href="1.html">hello world</a>
+    <div id="inner"></div>
+    <button id="but" onclick="ajax()">get请求</button>
+    <p id="ajax"></p>
+    <button id="pos" onclick="post()">post请求</button>
+    <p id="post"></p>
+    <script>
+        function ajax(){
+            console.log(1)
+            $.get("http://localhost:3000/test.js",{name:"weibo"},function(data){
+                $('#ajax').text(data)
+            })
+        }
+        function post(){
+            $.post("http://localhost:3000/post.js",{name:"weibo"},function(data){
+                $('#post').text(data)
+            })
+        }
+    </script>
 </body>
 </html>
