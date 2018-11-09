@@ -3,7 +3,8 @@ var url = require("url");
 var path = require("path");
 var fs = require("fs");
 var mime = require('mime');
-function readfile(res,filePathname,mimeType){
+
+function readfile(res, filePathname, mimeType) {
     fs.readFile(filePathname, (err, data) => { //读取文件响应
         if (err) {
             res.writeHead(404, {
@@ -20,7 +21,8 @@ function readfile(res,filePathname,mimeType){
         }
     })
 }
-function readMime(urlPathname){
+
+function readMime(urlPathname) {
     return mime.getType(path.parse(urlPathname).ext)
 }
 const static = {
@@ -29,16 +31,13 @@ const static = {
         var filePathname = path.join(__dirname, '../../public/index.html', urlPathname) //绝对路径
         console.log(filePathname)
         var mimeType = readMime(urlPathname)
-        readfile(res,filePathname,mimeType);
+        readfile(res, filePathname, mimeType);
     },
-    '/1.html':function(req,res,urlObj){
+    queryFile: function (req, res, urlObj) {
         var urlPathname = urlObj.pathname;
         var filePathname = path.join(__dirname, '../../public', urlPathname) //绝对路径
         var mimeType = readMime(urlPathname)
-        readfile(res,filePathname,mimeType);
+        readfile(res, filePathname, mimeType);
     },
-    '/favicon.ico':function(req,res){
-        
-    }
 }
-module.exports.static = static;
+module.exports = static;

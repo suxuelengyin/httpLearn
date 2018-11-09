@@ -3,7 +3,6 @@ var url = require("url");
 var path = require("path");
 var static = require('./staticServer')
 var api = require('./ajaxServer');
-var querystring = require('querystring');
 
 var server = new http.Server();
 server.on('request', function (req, res) {
@@ -14,24 +13,29 @@ server.on('request', function (req, res) {
     req.setEncoding('utf-8');
     if (ext !== ".js") {
         console.log(urlPathname)
-        static.static[urlPathname](req, res, urlObj)
+        const apis=Object.keys(static);
+        apis.indexOf(urlPathname)>-1?
+        static[urlPathname](req, res, urlObj):
+        static.queryFile(req, res, urlObj)
     } else {
         if (req.method === 'GET') {
-            req.body = urlObj.query
+            req.body = urlObj.query;
+            api[urlPathname](req, res)
         } else if (req.method === 'POST') {
             let postData = '';
             req.on("data", function (postDataChunk) {
                 postData += postDataChunk;
             });
             req.on("end", function () {
-                const params = querystring.parse(postData);
-                req.body = params;
+                req.body = postData;
+                console.log(req.body);
+                
             });
+            req.on('end', function () {
+                api[urlPathname](req, res)
+            })
         }
-        req.on('end', function () {
-            api.api[urlPathname](req, res)
-        })
-
+       
     }
 
 })
