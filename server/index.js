@@ -4,8 +4,8 @@ var path = require("path");
 var static = require('./staticServer')
 var api = require('./ajaxServer');
 var querystring = require('querystring');
-var server = new http.Server();
 
+var server = new http.Server();
 server.on('request', function (req, res) {
     console.log(req.method);
     var urlObj = url.parse(req.url);
@@ -13,6 +13,7 @@ server.on('request', function (req, res) {
     var ext = path.parse(urlPathname).ext;
     req.setEncoding('utf-8');
     if (ext !== ".js") {
+        console.log(urlPathname)
         static.static[urlPathname](req, res, urlObj)
     } else {
         if (req.method === 'GET') {
@@ -36,5 +37,5 @@ server.on('request', function (req, res) {
 })
 
 server.listen(3000, function () {
-    console.log("端口号：http://localhost:3000");
+    console.log("运行在：http://localhost:3000");
 })

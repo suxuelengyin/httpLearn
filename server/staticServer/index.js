@@ -36,6 +36,9 @@ const static = {
         var filePathname = path.join(__dirname, '../../public', urlPathname) //绝对路径
         var mimeType = readMime(urlPathname)
         readfile(res,filePathname,mimeType);
+    },
+    '/favicon.ico':function(req,res){
+        
     }
 }
 module.exports.static = static;
