@@ -39,12 +39,14 @@
             //     $('#post').text(data)
             // })
             $.ajax({
-                url:"http://localhost:3000/post.js",
-                data:{name:'post'},
-                contentType:'application/json',
-                method:'POST',
-                success:function(data){
-                    console.log(data);                   
+                url: "http://localhost:3000/post.js",
+                data: {
+                    name: 'post'
+                },
+                contentType: 'application/json',
+                method: 'POST',
+                success: function (data) {
+                    console.log(data);
                 }
             })
         }
@@ -62,9 +64,10 @@
                     },
                     redirect: 'follow', // manual, *follow, error
                     referrer: 'no-referrer',
-                }).then(res =>{ 
-                    console.log(res);                   
-                    return res.json()})
+                }).then(res => {
+                    console.log(res);
+                    return res.json()
+                })
                 .then((data) => {
                     console.log(data);
                 })

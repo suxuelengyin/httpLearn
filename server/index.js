@@ -28,8 +28,7 @@ server.on('request', function (req, res) {
             });
             req.on("end", function () {
                 req.body = postData;
-                console.log(req.body);
-                
+                console.log(req.body);                
             });
             req.on('end', function () {
                 api[urlPathname](req, res)
