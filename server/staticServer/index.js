@@ -28,14 +28,18 @@ function readMime(urlPathname) {
 const static = {
     '/': function (req, res, urlObj) {
         var urlPathname = urlObj.pathname;
-        var filePathname = path.join(__dirname, '../../public/index.html', urlPathname) //绝对路径
-        console.log(filePathname)
+        var filePathname = path.join(__dirname, '../../public/index.html', urlPathname)
+         //绝对路径
+        
         var mimeType = readMime(urlPathname)
         readfile(res, filePathname, mimeType);
     },
     queryFile: function (req, res, urlObj) {
+        console.log(urlObj);
+        
         var urlPathname = urlObj.pathname;
-        var filePathname = path.join(__dirname, '../../public', urlPathname) //绝对路径
+        var filePathname = path.join(__dirname, '../../', urlPathname) //绝对路径
+        console.log(filePathname)
         var mimeType = readMime(urlPathname)
         readfile(res, filePathname, mimeType);
     },

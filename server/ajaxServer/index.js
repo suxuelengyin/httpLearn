@@ -1,5 +1,6 @@
 var querystring = require('querystring');
-
+var url = require('url')
+var extendsApi = require("../../src/server/index.js") 
 function sendData(res, data) {
     console.log(typeof data);
     res.writeHead(200, {
@@ -23,7 +24,13 @@ const api = {
     '/fetch.js': function (req, res) {
         const data = req.body;
         console.log(data);
-        sendData(res, JSON.stringify(data));
+        sendData(res, data);
     }
 }
-module.exports = api
+const keys=Object.keys(extendsApi);
+keys.forEach((item,index)=>{
+    api[item]=function(req,res){
+        sendData(res,extendsApi[item](req,res))
+    }
+})
+module.exports =api
