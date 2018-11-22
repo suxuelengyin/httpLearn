@@ -4,12 +4,15 @@
 	"description": "ownshttp",
 	"main": "http.js",
 	"scripts": {
-		"start": "node server/index.js",
+		"start": "supervisor server/index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "suxue",
 	"license": "ISC",
 	"dependencies": {
 		"mime": "^2.3.1"
+	},
+	"devDependencies": {
+		"supervisor": "^0.12.0"
 	}
 }
